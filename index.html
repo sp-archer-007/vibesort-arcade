@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eco Sort Arcade</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="game-wrapper">
+        <div class="game-container" id="gameContainer">
+
+            <!-- PARTICLES CANVAS -->
+            <canvas id="particlesCanvas"></canvas>
+
+            <!-- ========== START SCREEN ========== -->
+            <div class="screen start-screen active" id="startScreen">
+                <div class="start-content">
+                    <div class="logo-icon">♻️</div>
+                    <h1 class="game-title">Eco Sort</h1>
+                    <p class="game-subtitle">Sort items before time runs out</p>
+
+                    <div class="how-to-play">
+                        <div class="how-row">
+                            <div class="how-card eco">
+                                <span class="how-key">← A</span>
+                                <span class="how-icon">🌿</span>
+                                <span class="how-label">Eco Friendly</span>
+                            </div>
+                            <div class="how-divider">or</div>
+                            <div class="how-card harmful">
+                                <span class="how-key">D →</span>
+                                <span class="how-icon">☠️</span>
+                                <span class="how-label">Harmful</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="btn-start" id="btnStart">
+                        <span>Start Game</span>
+                        <span class="btn-hint">Press Space or Enter</span>
+                    </button>
+
+                    <div class="start-highscore" id="startHighscore"></div>
+                </div>
+            </div>
+
+            <!-- ========== GAME SCREEN ========== -->
+            <div class="screen game-screen" id="gameScreen">
+
+                <!-- Timer Bar -->
+                <div class="timer-bar-track">
+                    <div class="timer-bar-fill" id="timerBar"></div>
+                    <span class="timer-text" id="timerText">60</span>
+                </div>
+
+                <!-- HUD -->
+                <div class="hud">
+                    <div class="hud-left">
+                        <div class="score-block">
+                            <span class="score-label">SCORE</span>
+                            <span class="score-value" id="scoreValue">0</span>
+                        </div>
+                    </div>
+                    <div class="hud-center">
+                        <div class="combo-display" id="comboDisplay">
+                            <span class="combo-value" id="comboValue"></span>
+                        </div>
+                    </div>
+                    <div class="hud-right">
+                        <div class="streak-block">
+                            <span class="streak-label">STREAK</span>
+                            <span class="streak-value" id="streakValue">0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bins -->
+                <div class="bin bin-eco" id="binEco">
+                    <div class="bin-glow"></div>
+                    <div class="bin-body">
+                        <div class="bin-emoji">🌿</div>
+                        <div class="bin-name">Eco Friendly</div>
+                        <div class="bin-key">← A</div>
+                    </div>
+                </div>
+
+                <div class="bin bin-harmful" id="binHarmful">
+                    <div class="bin-glow"></div>
+                    <div class="bin-body">
+                        <div class="bin-emoji">☠️</div>
+                        <div class="bin-name">Harmful</div>
+                        <div class="bin-key">D →</div>
+                    </div>
+                </div>
+
+                <!-- Item Area -->
+                <div class="item-zone" id="itemZone">
+                    <div class="item-card" id="itemCard">
+                        <div class="item-emoji" id="itemEmoji"></div>
+                        <div class="item-name" id="itemName"></div>
+                    </div>
+                    <div class="item-timer-ring" id="itemTimerRing">
+                        <svg viewBox="0 0 120 120">
+                            <circle class="ring-bg" cx="60" cy="60" r="54"/>
+                            <circle class="ring-fill" id="ringFill" cx="60" cy="60" r="54"/>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Floating Score -->
+                <div class="floating-scores" id="floatingScores"></div>
+            </div>
+
+            <!-- ========== GAME OVER SCREEN ========== -->
+            <div class="screen gameover-screen" id="gameOverScreen">
+                <div class="gameover-content">
+                    <div class="gameover-header">
+                        <div class="go-emoji" id="goEmoji">🌍</div>
+                        <h2 class="go-title" id="goTitle">Time's Up!</h2>
+                        <p class="go-subtitle" id="goSubtitle">Great effort, eco warrior!</p>
+                    </div>
+
+                    <div class="go-score-ring">
+                        <div class="go-score-number" id="goScore">0</div>
+                        <div class="go-score-label">POINTS</div>
+                    </div>
+
+                    <div class="go-stats">
+                        <div class="go-stat">
+                            <span class="go-stat-value" id="goCorrect">0</span>
+                            <span class="go-stat-label">Correct</span>
+                        </div>
+                        <div class="go-stat-divider"></div>
+                        <div class="go-stat">
+                            <span class="go-stat-value" id="goWrong">0</span>
+                            <span class="go-stat-label">Wrong</span>
+                        </div>
+                        <div class="go-stat-divider"></div>
+                        <div class="go-stat">
+                            <span class="go-stat-value" id="goAccuracy">0%</span>
+                            <span class="go-stat-label">Accuracy</span>
+                        </div>
+                        <div class="go-stat-divider"></div>
+                        <div class="go-stat">
+                            <span class="go-stat-value" id="goBestStreak">0</span>
+                            <span class="go-stat-label">Best Streak</span>
+                        </div>
+                    </div>
+
+                    <div class="go-highscore" id="goHighscore">
+                        <span class="go-hs-label">🏆 HIGH SCORE</span>
+                        <span class="go-hs-value" id="goHighscoreValue">0</span>
+                    </div>
+
+                    <div class="go-new-record hidden" id="goNewRecord">🎉 New Record!</div>
+
+                    <button class="btn-restart" id="btnRestart">
+                        <span>Play Again</span>
+                        <span class="btn-hint">Press Space or Enter</span>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
